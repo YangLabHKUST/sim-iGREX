@@ -1,2 +1,2 @@
 # sim-iGREX
-Simulation codes in IGREX
+R code for generating the simulation results and figures in IGREX.
