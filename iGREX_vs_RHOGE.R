@@ -140,7 +140,7 @@ for(i in 1:n_rep){
   q_ss <- sum(q0_vec)/mdiagm0 - 1/n2
   MoM_H_ss0 <- q_ss/S
 
-  out[i,] <- c(REML=REML$PVE,MoM_H,MoM_H_ss,MoM_H_ss0,fit_ldsc$fit$coefficients[1])
+  out[i,] <- c(REML=REML$h,MoM_H,MoM_H_ss,MoM_H_ss0,fit_ldsc$fit$coefficients[1])
 }
 
 colnames(out) <- c("REML","MoM","iGREX_ss","iGREX_ss0","RHOGE")
