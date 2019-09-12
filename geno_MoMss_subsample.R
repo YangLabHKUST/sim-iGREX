@@ -1,5 +1,5 @@
 library(mvtnorm)
-library(medH)
+library(iGREX)
 # set.seed(1)
 rm(list=ls())
 gc()
@@ -83,13 +83,13 @@ for(i in 1:n_rep){
     ztmp <- z_score[((g-1)*(p1-r)+1):((g-1)*(p1-r)+p1)]
     W1 <- matrix(1,n1,1)
     W2 <- matrix(1,n2,1)
-    fit_g <- medH_Kg(y_g,X1tmp,X2tmp,W1,1e-5,500)
+    fit_g <- iGREX_Kg(y_g,X1tmp,X2tmp,W1,1e-5,500)
     K <- K + fit_g$K_g
     K0 <- K0 + fit_g$K_g0
 
     q1_vec[g] <- t(ztmp/sqrt(n2))%*%fit_g$weight%*%ztmp/sqrt(n2) / p1
 
-    fitrd_g <- medH_Kg(y_g,X1tmp,X2tmp[idx,],W1,1e-5,500)
+    fitrd_g <- iGREX_Kg(y_g,X1tmp,X2tmp[idx,],W1,1e-5,500)
     Km <- Km + fitrd_g$K_g
     Km0 <- Km0 + fitrd_g$K_g0
     Km_diag <- c(Km_diag,sum(diag(fitrd_g$K_g)))
@@ -110,23 +110,23 @@ for(i in 1:n_rep){
 
   # # REML
   # REML <- REML_3var(K,Ka,z)
-  # out[i,1:2] <- REML$H[1,1:2]
-  # out[i,11:12] <- REML$H[2,1:2]
+  # out[i,1:2] <- REML$PVE[1,1:2]
+  # out[i,11:12] <- REML$PVE[2,1:2]
   #
   # # REML without acocunting for uncertainty
   # REML0 <- REML_3var(K0,Ka,z)
-  # out[i,3:4] <- REML0$H[1,1:2]
-  # out[i,13:14] <- REML0$H[2,1:2]
+  # out[i,3:4] <- REML0$PVE[1,1:2]
+  # out[i,13:14] <- REML0$PVE[2,1:2]
   #
   # # exact estimate by MoM
   # MoM <- MoM_3var(K,Ka,z)
-  # out[i,5:6] <- MoM$H[1,1:2]
-  # out[i,15:16] <- MoM$H[2,1:2]
+  # out[i,5:6] <- MoM$PVE[1,1:2]
+  # out[i,15:16] <- MoM$PVE[2,1:2]
   #
   # # exact estimate by MoM without accounting for uncertainty
   # MoM0 <- MoM_3var(K0,Ka,z)
-  # out[i,7:8] <- MoM0$H[1,1:2]
-  # out[i,17:18] <- MoM0$H[2,1:2]
+  # out[i,7:8] <- MoM0$PVE[1,1:2]
+  # out[i,17:18] <- MoM0$PVE[2,1:2]
 
   # MoM using summary statisitcs
   trK1 <- sum(diag(Km))

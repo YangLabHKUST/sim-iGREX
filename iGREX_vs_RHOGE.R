@@ -1,5 +1,5 @@
 library(mvtnorm)
-library(medH)
+library(iGREX)
 # set.seed(1)
 n1 <- 2000
 n2 <- 4000
@@ -68,7 +68,7 @@ for(i in 1:n_rep){
     ztmp <- z_score[(g*p1-p1+1):(g*p1)]
     W1 <- matrix(1,n1,1)
     W2 <- matrix(1,n2,1)
-    fit_g <- medH_Kg(y_g,X1tmp,X2tmp,W1,1e-5,500)
+    fit_g <- iGREX_Kg(y_g,X1tmp,X2tmp,W1,1e-5,500)
     K <- K + fit_g$K_g
     K0 <- K0 + fit_g$K_g0
 
@@ -78,7 +78,7 @@ for(i in 1:n_rep){
     z_TWAS[g] <- sum(ztmp*fit_g$mub)/sqrt(t(fit_g$mub)%*%cor(X2tmp[idx,])%*%fit_g$mub)
     Y_hat[,g] <- X2tmp[idx,]%*%fit_g$mub
 
-    fitrd_g <- medH_Kg(y_g,X1tmp,X2tmp[idx,],W1,1e-5,500)
+    fitrd_g <- iGREX_Kg(y_g,X1tmp,X2tmp[idx,],W1,1e-5,500)
     Km <- Km + fitrd_g$K_g
     Km0 <- Km0 + fitrd_g$K_g0
 
@@ -140,7 +140,7 @@ for(i in 1:n_rep){
   q_ss <- sum(q0_vec)/mdiagm0 - 1/n2
   MoM_H_ss0 <- q_ss/S
 
-  out[i,] <- c(REML=REML$h,MoM_H,MoM_H_ss,MoM_H_ss0,fit_ldsc$fit$coefficients[1])
+  out[i,] <- c(REML=REML$PVE,MoM_H,MoM_H_ss,MoM_H_ss0,fit_ldsc$fit$coefficients[1])
 }
 
 colnames(out) <- c("REML","MoM","iGREX_ss","iGREX_ss0","RHOGE")
